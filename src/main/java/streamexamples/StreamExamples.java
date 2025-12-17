@@ -3,6 +3,7 @@ package streamexamples;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class StreamExamples {
     public static void main(String[] args) {
@@ -21,5 +22,9 @@ public class StreamExamples {
         animals.add("Cat");
         animals.add("Dog");
         animals.add("Cow");
+
+        Stream<String> animalStream = animals.stream();
+        animalStream.map(String::toUpperCase).forEach(System.out::println);
+        //animalStream.map(String::toLowerCase).forEach(System.out::println); // This will throw an IllegalStateException
     }
 }
