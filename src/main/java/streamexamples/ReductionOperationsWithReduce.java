@@ -29,7 +29,7 @@ public class ReductionOperationsWithReduce {
         String concatenatedNames = employees.stream()
                 .map(Employee::getName)
                 .reduce("", (name1, name2) -> name1 + " " + name2);
-        System.out.println("Employees: " + concatenatedNames);
+        System.out.println("Employees: " + concatenatedNames.trim());
 
         /*
         List<Integer> nums = Arrays.asList(1,2,3,4,5);
