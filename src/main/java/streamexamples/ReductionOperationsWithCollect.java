@@ -1,6 +1,7 @@
 package streamexamples;
 
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class ReductionOperationsWithCollect {
@@ -48,11 +49,42 @@ public class ReductionOperationsWithCollect {
                 new Employee("Andy", 4500, Employee.Sex.MALE),
                 new Employee("Sara", 2000, Employee.Sex.FEMALE)
         );
-
+        /*
         Map<Employee.Sex, Integer> totalSalaryByGender = employees.stream()
                 .collect(Collectors.groupingBy(Employee::getGender,
                         Collectors.summingInt(Employee::getSalary)));
 
         System.out.println("Total salary by gender: " + totalSalaryByGender);
+
+        SalaryCollector salaryCollector = employees.stream()
+                .map(Employee::getSalary)
+                .collect(
+                        SalaryCollector::new,
+                        SalaryCollector::accept,
+                        SalaryCollector::combine
+                );
+
+        System.out.println("Total Salary: " + salaryCollector.getTotal());
+        */
+
+        Map<Employee.Sex, SalaryCollector> totalSalaryByGenderWithCustomCollector = employees.stream()
+                .collect(Collectors.groupingBy(
+                        Employee::getGender,
+                        Collectors.mapping(Employee::getSalary,
+                                Collector.of(
+                                        SalaryCollector::new,
+                                        SalaryCollector::accept,
+                                        (salary1, salary2) -> {
+                                                salary1.combine(salary2);
+                                                return salary1;
+                                        }
+                                )
+                        )
+                ));
+
+
+        totalSalaryByGenderWithCustomCollector.forEach((g,s) -> {
+            System.out.println("Gender: " + g + ", Total Salary: " + s.getTotal() + ", Count: " + s.getCount());
+        });
     }
 }
