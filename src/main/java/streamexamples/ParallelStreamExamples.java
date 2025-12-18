@@ -1,9 +1,6 @@
 package streamexamples;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -28,5 +25,29 @@ public class ParallelStreamExamples {
         Set<Collector.Characteristics> characteristicOfCollector = Collectors.groupingByConcurrent(n -> "Java").characteristics();
 
         System.out.println("Characteristics of the Collector: " + characteristicOfCollector);
+
+        // Ordering
+        System.out.println("List of Numbers: ");
+        numbers.stream().forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        System.out.println("List of Numbers in reverse order: ");
+        Comparator<Integer> reverse = Comparator.reverseOrder();
+        numbers.sort(reverse);
+        numbers.stream().forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        System.out.println("List of Numbers with parallel Stream: ");
+        numbers.parallelStream().forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+
+        System.out.println("List of Numbers with another parallel Stream: ");
+        numbers.parallelStream().forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        System.out.println("List of Numbers with parallel Stream and forEachOrdered Method: ");
+        numbers.parallelStream().forEachOrdered(n -> System.out.print(n + " "));
+        System.out.println();
     }
 }
